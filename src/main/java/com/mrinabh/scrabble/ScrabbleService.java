@@ -1,14 +1,14 @@
 package com.mrinabh.scrabble;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -106,8 +106,9 @@ public class ScrabbleService {
      */
     private void initializeDictionary() {
         try {
-            URL textFile = new URL("http://recruiting.bluenile.com/words.txt");
-            Scanner scanner = new Scanner(textFile.openStream());
+            File textFile = new ClassPathResource(
+                    "words.txt").getFile();
+            Scanner scanner = new Scanner(textFile.getCanonicalFile());
             dictionary = new ArrayList<String>();
             while (scanner.hasNext()) {
                 String entry = scanner.nextLine();
@@ -115,7 +116,7 @@ public class ScrabbleService {
                     dictionary.add(entry);
             }
         } catch (IOException ioe) {
-            // FIXME: Handle IO error scenario
+            System.out.println(ioe);
         }
     }
 }
